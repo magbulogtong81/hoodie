@@ -1,0 +1,89 @@
+name: windows builds
+
+on:
+  push:
+    branches: [ "master", "github_actions" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  GODOT_BASE_BRANCH: "4.3"
+
+#this will cancel other running actions with the same yml
+#helps lessen running actions and prevents action duplicates
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android-template:
+    runs-on: "macos-latest"
+    name: ${{matrix.name}}-${{matrix.arch}}
+
+
+    strategy:
+      matrix:
+        arch: [x86_64, arm64]
+        include:
+          - name: 4.3 Editor
+            precision: single
+            target: editor
+
+          - name: 4.3 Template
+            precision: single
+            target: template_release
+
+
+
+
+    steps:
+        #setup jdk 17
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      #setup this repo
+      - uses: actions/checkout@v2
+
+
+
+      # Use python 3.x release (works cross platform; best to keep self contained in it's own step)
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v5
+        with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: '3.x'
+
+      # Setup scons, print python version and scons version info, so if anything is broken it won't run the build.
+      - name: Configuring Python packages
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons
+          python --version
+          scons --version
+
+
+      # Clone GodotCPP
+      - uses: actions/checkout@v2
+        with:
+          repository: godotengine/godot-cpp
+          ref: ${{env.GODOT_BASE_BRANCH}}
+
+       #compile with scons
+      - name: Compilation
+        run: |
+          cd godot-cpp
+          scons verbose=yes platform=macos tests=no dev_build=no target=${{matrix.target} precision=${{matrix.precision}} arch=${{matrix.arch}}
+          cd ..
+
+      #list all folders and subdirectories since I don't know which folder to upload
+      - name: list files
+        run: ls -ash *
+
+      #upload artifact
+      - uses: actions/upload-artifact@v2
+        with:
+          name: hoodie-${{matrix.target}}-${{matrix.arch}}-macos
+          path: hoodie/bin/*

@@ -1,0 +1,115 @@
+name: android builds
+
+on:
+  push:
+    branches: [ "master", "github_actions" ]
+  pull_request:
+    branches: [ "master" ]
+
+#global env
+env:
+  GODOT_BASE_BRANCH: "4.3"
+
+
+#this will cancel other running actions with the same yml
+#helps lessen running actions and prevents action duplicates
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android-template:
+    runs-on: "ubuntu-latest"
+    name: ${{matrix.name}}
+
+
+    strategy:
+      matrix:
+        include:
+        ####TEPMPLATES#####
+          - name: Release build arm
+            target: template_release
+            arch: arm32
+
+          - name: Release build arm64
+            target: template_release
+            arch: arm64
+
+          - name: Debug build arm
+            target: template_debug
+            arch: arm32
+
+          - name: Debug build arm64
+            target: template_debug
+            arch: arm64
+
+          - name: Debug build x86
+            target: template_debug
+            arch: x86_32
+
+          - name: Debug build x86_64
+            target: template_debug
+            arch: x86_64
+
+          - name: Release build x86
+            target: template_release
+            arch: x86_32
+
+          - name: Release build x86_64
+            target: template_release
+            arch: x86_64
+
+          ####EDITOR####
+          - name: Editor build x86_64
+            target: editor
+            arch: x86_64
+
+          - name: Editor build x86
+            target: editor
+            arch: x86_32
+
+          - name: Editor build arm
+            target: editor
+            arch: arm32
+
+          - name: Editor build arm64
+            target: editor
+            arch: arm64
+
+
+    steps:
+        #setup jdk 17
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      #setup this repo
+      - uses: actions/checkout@v2
+
+
+
+      # Clone GodotCPP
+      - uses: actions/checkout@v2
+        with:
+          repository: godotengine/godot-cpp
+          ref: ${{env.GODOT_BASE_BRANCH}}
+
+
+       #compile with scons
+      - name: Compilation
+        run: |
+          cd godot-cpp
+          scons verbose=yes warnings=extra platform=android target=${{matrix.target}} arch=${{matrix.arch}}
+          cd ..
+
+      #list all folders and subdirectories since I don't know which folder to upload
+      - name: list files
+        run: ls -ash *
+
+      #upload artifact
+      - uses: actions/upload-artifact@v2
+        with:
+          name: hoodie-${{matrix.target}}-${{matrix.arch}}-android
+          path: hoodie/bin/*
