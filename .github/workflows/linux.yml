@@ -97,7 +97,7 @@ jobs:
        #install libraries for 32-bit
       - name: install 32-bit libs
         if: ${{ matrix.arch == 'x86_32' }}
-        run: sudo apt install -y libc6-dev-i386
+        run: sudo apt install -y libc6-dev-i386 g++-multilib
 
        #compile with scons
       - name: Compilation
