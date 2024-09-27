@@ -80,12 +80,19 @@ jobs:
           cd ..
 
 
+#this is probably the cause of compilation errors
+#maybe theres's api changes that prevents it to compile
       # Clone GodotCPP
-      - uses: actions/checkout@v2
-        with:
-          repository: godotengine/godot-cpp
-          ref: ${{env.GODOT_BASE_BRANCH}}
-          path: godot-cpp
+#      - uses: actions/checkout@v2
+#        with:
+#          repository: godotengine/godot-cpp
+#          ref: ${{env.GODOT_BASE_BRANCH}}
+#          path: godot-cpp
+
+
+      - name: git submodule update
+        run: git submodule update --init
+
 
        #install libraries for 32-bit
       - name: install 32-bit libs

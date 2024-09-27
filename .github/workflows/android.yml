@@ -90,12 +90,19 @@ jobs:
 
 
 
+#this is probably the cause of compilation errors
+#maybe theres's api changes that prevents it to compile
       # Clone GodotCPP
-      - uses: actions/checkout@v2
-        with:
-          repository: godotengine/godot-cpp
-          ref: ${{env.GODOT_BASE_BRANCH}}
-          path: godot-cpp
+#      - uses: actions/checkout@v2
+#        with:
+#          repository: godotengine/godot-cpp
+#          ref: ${{env.GODOT_BASE_BRANCH}}
+#          path: godot-cpp
+
+
+      - name: git submodule update
+        run: git submodule update --init
+
 
 
       # Setup custom buildroot so we may use an old but compatible GLIBC version, while keeping recent toolchain.
@@ -113,8 +120,16 @@ jobs:
           ./relocate-sdk.sh
           cd ..
 
+
        #compile with scons
       - name: Compilation
+      - uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: r21e
+          add-to-path: true
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
           PATH=${GITHUB_WORKSPACE}/x86_64-godot-linux-gnu_sdk-buildroot/bin:$PATH
           scons verbose=yes warnings=extra platform=android target=${{matrix.target}} arch=${{matrix.arch}}

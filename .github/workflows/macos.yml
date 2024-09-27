@@ -65,13 +65,18 @@ jobs:
           scons --version
 
 
+#this is probably the cause of compilation errors
+#maybe theres's api changes that prevents it to compile
       # Clone GodotCPP
-      - uses: actions/checkout@v2
-        with:
-          repository: godotengine/godot-cpp
-          ref: ${{env.GODOT_BASE_BRANCH}}
-          path: godot-cpp
+#      - uses: actions/checkout@v2
+#        with:
+#          repository: godotengine/godot-cpp
+#          ref: ${{env.GODOT_BASE_BRANCH}}
+#          path: godot-cpp
 
+
+      - name: git submodule update
+        run: git submodule update --init
 
        #compile with scons
       - name: Compilation
