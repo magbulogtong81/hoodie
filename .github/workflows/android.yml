@@ -129,6 +129,13 @@ jobs:
           add-to-path: true
 
 
+      - name: install ndk libraries
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run:  |
+          sdkmanager --licenses | yes
+          sdkmanager  "platform-tools" "build-tools;34.0.0" "platforms;android-34" "cmdline-tools;latest" "cmake;3.10.2.4988404" "ndk;23.2.8568313"
+
        #compile with scons
       - name: Compilation
         env:

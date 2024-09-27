@@ -107,7 +107,7 @@ jobs:
           fi
           PATH="${GITHUB_WORKSPACE}/${ARCH}-godot-linux-gnu_sdk-buildroot/bin:$PATH"
           echo "PATH: $PATH"
-          scons verbose=yes platform=linux tests=no dev_build=no target=${{matrix.target}} precision=${{matrix.precision}} arch=${{matrix.arch}}
+          scons verbose=yes platform=linux tests=no dev_build=no target=${{matrix.target}} precision=${{matrix.precision}} arch=${{matrix.arch}} CFLAGS='-fpermissive'
 
 
       #list all folders and subdirectories since I don't know which folder to upload
