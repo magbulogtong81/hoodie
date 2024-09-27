@@ -97,7 +97,7 @@ jobs:
 
       #list all folders and subdirectories since I don't know which folder to upload
       - name: list files
-        run: tree /f /t
+        run: tree /f
 
       #upload artifact
       - uses: actions/upload-artifact@v4
