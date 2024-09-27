@@ -10,7 +10,7 @@ on:
 #this will cancel other running actions with the same yml
 #helps lessen running actions and prevents action duplicates
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-linux
   cancel-in-progress: true
 
 jobs:

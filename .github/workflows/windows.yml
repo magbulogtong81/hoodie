@@ -12,7 +12,7 @@ env:
 #this will cancel other running actions with the same yml
 #helps lessen running actions and prevents action duplicates
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-windows
   cancel-in-progress: true
 
 jobs:
