@@ -1,4 +1,4 @@
-name: windows builds
+name: macos builds
 
 on:
   push:

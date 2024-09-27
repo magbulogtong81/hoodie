@@ -92,7 +92,7 @@ jobs:
         run: |
           PATH=${GITHUB_WORKSPACE}/x86_64-godot-linux-gnu_sdk-buildroot/bin:$PATH
           cd godot-cpp
-          scons verbose=yes platform=linuxbsd tests=no dev_build=no target=${{matrix.target}} precision=${{matrix.precision}} arch=${{matrix.arch}}
+          scons verbose=yes platform=linux tests=no dev_build=no target=${{matrix.target}} precision=${{matrix.precision}} arch=${{matrix.arch}}
           cd ..
 
 
