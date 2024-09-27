@@ -116,9 +116,8 @@ jobs:
        #compile with scons
       - name: Compilation
         run: |
-          cd godot-cpp
+          PATH=${GITHUB_WORKSPACE}/x86_64-godot-linux-gnu_sdk-buildroot/bin:$PATH
           scons verbose=yes warnings=extra platform=android target=${{matrix.target}} arch=${{matrix.arch}}
-          cd ..
 
       #list all folders and subdirectories since I don't know which folder to upload
       - name: list files
@@ -128,4 +127,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: hoodie-${{matrix.target}}-${{matrix.arch}}-android
-          path: hoodie/bin/*
+          path: demo/bin/*

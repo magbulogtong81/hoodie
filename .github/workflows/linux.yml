@@ -87,13 +87,16 @@ jobs:
           ref: ${{env.GODOT_BASE_BRANCH}}
           path: godot-cpp
 
+       #install libraries for 32-bit
+      - name: install 32-bit libs
+        if: ${{ matrix.arch == 'x86_32' }}
+        run: sudo apt install -y libc6-dev-i386
+
        #compile with scons
       - name: Compilation
         run: |
           PATH=${GITHUB_WORKSPACE}/x86_64-godot-linux-gnu_sdk-buildroot/bin:$PATH
-          cd godot-cpp
           scons verbose=yes platform=linux tests=no dev_build=no target=${{matrix.target}} precision=${{matrix.precision}} arch=${{matrix.arch}}
-          cd ..
 
 
       #list all folders and subdirectories since I don't know which folder to upload
@@ -104,4 +107,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: hoodie-${{matrix.target}}-${{matrix.arch}}-linux
-          path: hoodie/bin/*
+          path: demo/bin/*
