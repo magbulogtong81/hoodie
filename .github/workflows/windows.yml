@@ -92,7 +92,7 @@ jobs:
       - name: Compilation
         run: |
           cd godot-cpp
-          scons verbose=yes platform=windows tests=no dev_build=no target=${{matrix.target} precision=${{matrix.precision}} arch=${{matrix.arch}}
+          scons verbose=yes platform=windows tests=no dev_build=no target=${{matrix.target}} precision=${{matrix.precision}} arch=${{matrix.arch}}
           cd ..
 
       #list all folders and subdirectories since I don't know which folder to upload
@@ -100,7 +100,7 @@ jobs:
         run: dir
 
       #upload artifact
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: hoodie-${{matrix.target}}-${{matrix.arch}}-windows
           path: hoodie/bin/*

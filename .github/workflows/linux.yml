@@ -92,7 +92,7 @@ jobs:
         run: |
           PATH=${GITHUB_WORKSPACE}/x86_64-godot-linux-gnu_sdk-buildroot/bin:$PATH
           cd godot-cpp
-          scons verbose=yes platform=linuxbsd tests=no dev_build=no target=${{matrix.target} precision=${{matrix.precision}} arch=${{matrix.arch}}
+          scons verbose=yes platform=linuxbsd tests=no dev_build=no target=${{matrix.target}} precision=${{matrix.precision}} arch=${{matrix.arch}}
           cd ..
 
 
@@ -101,7 +101,7 @@ jobs:
         run: ls -ash *
 
       #upload artifact
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: hoodie-${{matrix.target}}-${{matrix.arch}}-linux
           path: hoodie/bin/*
