@@ -87,6 +87,7 @@ jobs:
         with:
           repository: godotengine/godot-cpp
           ref: ${{env.GODOT_BASE_BRANCH}}
+          path: godot-cpp
 
        #compile with scons
       - name: Compilation
