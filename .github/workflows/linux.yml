@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: [ "master" ]
 
-env:
-  GODOT_BASE_BRANCH: "4.3"
 
 #this will cancel other running actions with the same yml
 #helps lessen running actions and prevents action duplicates
@@ -36,12 +34,12 @@ jobs:
 
 
             #32-bit
-          - name: 4.3 Editor
+          - name: 4.3 Editor 32-bit
             precision: single
             target: editor
             arch: x86_32
 
-          - name: 4.3 Template
+          - name: 4.3 Template 32-bit
             precision: single
             target: template_release
             arch: x86_32
@@ -108,6 +106,7 @@ jobs:
             ARCH="i686"
           fi
           PATH="${GITHUB_WORKSPACE}/${ARCH}-godot-linux-gnu_sdk-buildroot/bin:$PATH"
+          echo "PATH: $PATH"
           scons verbose=yes platform=linux tests=no dev_build=no target=${{matrix.target}} precision=${{matrix.precision}} arch=${{matrix.arch}}
 
 
