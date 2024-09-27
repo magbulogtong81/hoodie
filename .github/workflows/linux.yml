@@ -72,13 +72,17 @@ jobs:
       #      do not persist between steps (?). I also placed this step after checkout because the checkout step changes
       #      the working directory for all following steps.
       - name: Setup buildroot
+        env:
+          ARCH: ${{matrix.arch}}
         run: |
-          wget https://download.tuxfamily.org/godotengine/toolchains/linux/x86_64-godot-linux-gnu_sdk-buildroot.tar.bz2
-          tar -xjf x86_64-godot-linux-gnu_sdk-buildroot.tar.bz2
-          cd x86_64-godot-linux-gnu_sdk-buildroot
+          if [[ "$ARCH" == "x86_32" ]]; then
+            ARCH="i686"
+          fi
+          wget "https://download.tuxfamily.org/godotengine/toolchains/linux/${ARCH}-godot-linux-gnu_sdk-buildroot.tar.bz2"
+          tar -xjf "${ARCH}-godot-linux-gnu_sdk-buildroot.tar.bz2"
+          cd "${ARCH}-godot-linux-gnu_sdk-buildroot"
           ./relocate-sdk.sh
           cd ..
-
 
 #this is probably the cause of compilation errors
 #maybe theres's api changes that prevents it to compile
@@ -94,15 +98,16 @@ jobs:
         run: git submodule update --init
 
 
-       #install libraries for 32-bit
-      - name: install 32-bit libs
-        if: ${{ matrix.arch == 'x86_32' }}
-        run: sudo apt install -y libc6-dev-i386 g++-multilib
 
        #compile with scons
       - name: Compilation
+        env:
+          ARCH: ${{matrix.arch}}
         run: |
-          PATH=${GITHUB_WORKSPACE}/x86_64-godot-linux-gnu_sdk-buildroot/bin:$PATH
+          if [[ "$ARCH" == "x86_32" ]]; then
+            ARCH="i686"
+          fi
+          PATH="${GITHUB_WORKSPACE}/${ARCH}-godot-linux-gnu_sdk-buildroot/bin:$PATH"
           scons verbose=yes platform=linux tests=no dev_build=no target=${{matrix.target}} precision=${{matrix.precision}} arch=${{matrix.arch}}
 
 
