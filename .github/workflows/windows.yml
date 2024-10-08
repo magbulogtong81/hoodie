@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: [ "master" ]
 
-env:
-  GODOT_BASE_BRANCH: "4.3"
 
 #this will cancel other running actions with the same yml
 #helps lessen running actions and prevents action duplicates
@@ -24,22 +22,22 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: 4.3 Editor 64-bit
+          - name: Editor 64-bit
             precision: single
             target: editor
             arch: x86_64
 
-          - name: 4.3 Template 64-bit
+          - name: Template 64-bit
             precision: single
             target: template_release
             arch: x86_64
 
-          - name: 4.3 Editor 32-bit
+          - name: Editor 32-bit
             precision: single
             target: editor
             arch: x86_32
 
-          - name: 4.3 Template 32-bit
+          - name: Template 32-bit
             precision: single
             target: template_release
             arch: x86_32

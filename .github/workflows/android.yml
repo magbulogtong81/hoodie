@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ "master" ]
 
-#global env
-env:
-  GODOT_BASE_BRANCH: "4.3"
-
 
 #this will cancel other running actions with the same yml
 #helps lessen running actions and prevents action duplicates
