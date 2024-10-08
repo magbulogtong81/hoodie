@@ -433,7 +433,7 @@ jobs:
 
 
 
-
+  #job to merge artifact
   merge_artifacts:
       runs-on: ubuntu-latest
       permissions:
@@ -446,9 +446,9 @@ jobs:
           uses: actions/download-artifact@v4
           with:
             name:
-            path: build/addons/hoodie
+            path: build/addons
             merge-multiple: true
-        - run: ls -lash build/*
+        - run: ls -lash build/addons/*
 
 
         #delete artifacts after we download it
@@ -458,8 +458,8 @@ jobs:
             name: hoodie-*
 
 
-        - name: upload all as one zip
+        - name: upload all as one file
           uses: actions/upload-artifact@v4
           with:
-            name: hoodie.zip
+            name: hoodie-addon
             path: build
