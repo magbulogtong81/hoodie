@@ -188,7 +188,8 @@ void HNHoodieGeoVectorExpression::_process(const Array &p_inputs) {
                     target_arr[i] = x;
                 }
             } else {
-                target_arr[i] = use_attribute ? attr[i] : pts[i];
+                target_arr[i] = use_attribute ? attr[i].operator godot::Vector3() : pts[i];
+
             }
         }
 
