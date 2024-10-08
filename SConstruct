@@ -18,16 +18,18 @@ sources = Glob("src/*.cpp")
 sources += Glob("src/*/*.cpp")
 sources += Glob("src/*/*/*.cpp")
 
+addons_path = "addons/hoodie/"
+
 if env["platform"] == "macos":
     library = env.SharedLibrary(
-        "demo/bin/libhoodie.{}.{}.framework/libhoodie.{}.{}".format(
+        "demo/" + addons_path + "libhoodie.{}.{}.framework/libhoodie.{}.{}".format(
             env["platform"], env["target"], env["platform"], env["target"]
         ),
         source=sources,
     )
 else:
     library = env.SharedLibrary(
-        "demo/bin/libhoodie{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        "demo/" + addons_path + "libhoodie{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
         source=sources,
     )
 
