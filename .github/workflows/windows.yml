@@ -2,7 +2,7 @@ name: windows builds
 
 on:
   push:
-    branches: [ "master", "github_actions" ]
+    branches: [ "godotv4.3", "github_actions" ]
   pull_request:
     branches: [ "master" ]
 
@@ -16,33 +16,15 @@ concurrency:
 jobs:
   android-template:
     runs-on: "windows-latest"
-    name: ${{matrix.name}}
+    name: windows-${{matrix.target}}-${{matrix.arch}}-${{matrix.version}}
 
 
     strategy:
+      fail-fast: false
       matrix:
-        include:
-          - name: Editor 64-bit
-            precision: single
-            target: editor
-            arch: x86_64
-
-          - name: Template 64-bit
-            precision: single
-            target: template_release
-            arch: x86_64
-
-          - name: Editor 32-bit
-            precision: single
-            target: editor
-            arch: x86_32
-
-          - name: Template 32-bit
-            precision: single
-            target: template_release
-            arch: x86_32
-
-
+        arch: [x86_32, x86_64]
+        version: ["godot-4.2-stable", "godot-4.3-stable"]
+        target: [template_release, editor]
 
     steps:
         #setup jdk 17
@@ -86,12 +68,15 @@ jobs:
 
 
       - name: git submodule update
-        run: git submodule update --init
+        run: |
+          git submodule update --init
+          cd godot-cpp && git checkout ${{ matrix.version }}
+          cd ..
 
        #compile with scons
       - name: Compilation
         run: |
-          scons verbose=yes platform=windows tests=no dev_build=no target=${{matrix.target}} precision=${{matrix.precision}} arch=${{matrix.arch}}
+          scons verbose=yes platform=windows tests=no dev_build=no target=${{matrix.target}} arch=${{matrix.arch}}
 
       #list all folders and subdirectories since I don't know which folder to upload
       - name: list files
@@ -100,5 +85,5 @@ jobs:
       #upload artifact
       - uses: actions/upload-artifact@v4
         with:
-          name: hoodie-${{matrix.target}}-${{matrix.arch}}-windows
+          name: hoodie-${{matrix.target}}-${{matrix.arch}}-${{matrix.version}}-windows
           path: demo/addons

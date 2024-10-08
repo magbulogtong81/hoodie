@@ -2,9 +2,10 @@ name: android builds
 
 on:
   push:
-    branches: [ "master", "github_actions" ]
+    branches: [ "godotv4.3", "github_actions" ]
   pull_request:
     branches: [ "master" ]
+
 
 
 #this will cancel other running actions with the same yml
@@ -16,46 +17,15 @@ concurrency:
 jobs:
   android-template:
     runs-on: "ubuntu-20.04"
-    name: ${{matrix.name}}
+    name: android-${{matrix.arch}}-${{matrix.version}}-${{matrix.target}}
 
 
     strategy:
+      fail-fast: false
       matrix:
-        include:
-        ####TEPMPLATES#####
-          - name: Release build arm
-            target: template_release
-            arch: arm32
-
-          - name: Release build arm64
-            target: template_release
-            arch: arm64
-
-          - name: Release build x86
-            target: template_release
-            arch: x86_32
-
-          - name: Release build x86_64
-            target: template_release
-            arch: x86_64
-
-          ####EDITOR####
-          - name: Editor build x86_64
-            target: editor
-            arch: x86_64
-
-          - name: Editor build x86
-            target: editor
-            arch: x86_32
-
-          - name: Editor build arm
-            target: editor
-            arch: arm32
-
-          - name: Editor build arm64
-            target: editor
-            arch: arm64
-
+        arch: [arm32, arm64, x86_32, x86_64]
+        version: ["godot-4.2-stable", "godot-4.3-stable"]
+        target: [template_release, editor]
 
     steps:
         #setup jdk 17
@@ -81,7 +51,10 @@ jobs:
 
 
       - name: git submodule update
-        run: git submodule update --init
+        run: |
+          git submodule update --init
+          cd godot-cpp && git checkout ${{ matrix.version }}
+          cd ..
 
 
 
@@ -127,6 +100,6 @@ jobs:
       #upload artifact
       - uses: actions/upload-artifact@v4
         with:
-          name: hoodie-${{matrix.target}}-${{matrix.arch}}-android
+          name: hoodie-${{matrix.target}}-${{matrix.arch}}-${{matrix.version}}-android
           path: demo/addons
 
