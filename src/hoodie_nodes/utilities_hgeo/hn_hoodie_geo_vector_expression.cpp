@@ -111,7 +111,8 @@ void HNHoodieGeoVectorExpression::_process(const Array &p_inputs) {
             }
         }
 
-        Array target_arr = use_attribute ? attr : pts;
+        Array target_arr = use_attribute ? Array(attr) : Array(pts);
+
 
         for (int i = 0; i < target_arr.size(); i++) {
             Array filter_values;

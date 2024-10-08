@@ -24,22 +24,22 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: 4.3 Editor
+          - name: 4.3 Editor 64-bit
             precision: single
             target: editor
             arch: x86_64
 
-          - name: 4.3 Template
+          - name: 4.3 Template 64-bit
             precision: single
             target: template_release
             arch: x86_64
 
-          - name: 4.3 Editor
+          - name: 4.3 Editor 32-bit
             precision: single
             target: editor
             arch: x86_32
 
-          - name: 4.3 Template
+          - name: 4.3 Template 32-bit
             precision: single
             target: template_release
             arch: x86_32
