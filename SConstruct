@@ -22,8 +22,8 @@ addons_path = "addons/hoodie/"
 
 if env["platform"] == "macos":
     library = env.SharedLibrary(
-        "demo/" + addons_path + "libhoodie.{}.{}.framework/libhoodie.{}.{}".format(
-            env["platform"], env["target"], env["platform"], env["target"]
+        "demo/" + addons_path + "libhoodie.{}.{}.framework/libhoodie.{}.{}.{}".format(
+            env["platform"], env["target"], env["platform"], env["target"], env["arch"]
         ),
         source=sources,
     )
