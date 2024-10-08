@@ -118,4 +118,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: hoodie-${{matrix.target}}-${{matrix.arch}}-linux
-          path: demo/bin/*
+          path: demo/addons

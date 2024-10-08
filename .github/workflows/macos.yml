@@ -23,16 +23,26 @@ jobs:
 
     strategy:
       matrix:
-        arch: [x86_64, arm64]
         include:
-          - name: 4.3 Editor
+          - name: 4.3 Editor x86_64
             precision: single
             target: editor
+            arch: x86_64
 
-          - name: 4.3 Template
+          - name: 4.3 Template x86_64
             precision: single
             target: template_release
+            arch: x86_64
 
+          - name: 4.3 Editor arm64
+            precision: single
+            target: editor
+            arch: arm64
+
+          - name: 4.3 Template  arm64
+            precision: single
+            target: template_release
+            arch: arm64
 
 
 
@@ -92,4 +102,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: hoodie-${{matrix.target}}-${{matrix.arch}}-macos
-          path: demo/bin/*
+          path: demo/addons
