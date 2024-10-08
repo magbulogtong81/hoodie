@@ -126,7 +126,7 @@ jobs:
 
 
 
-release:
+  release:
       runs-on: ubuntu-latest
       permissions:
         contents: write
