@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  android-template:
+  workflow_template:
     runs-on: "ubuntu-20.04"
     name: ${{matrix.name}}
 
@@ -119,3 +119,24 @@ jobs:
         with:
           name: hoodie-${{matrix.target}}-${{matrix.arch}}-linux
           path: demo/addons
+
+
+
+
+
+
+
+release:
+      runs-on: ubuntu-latest
+      permissions:
+        contents: write
+        
+      needs: build
+
+      steps: 
+        - uses: actions/download-artifact@v4
+          with:
+            name:
+            path: build
+            merge-multiple: true
+        - run: ls -lash build/*

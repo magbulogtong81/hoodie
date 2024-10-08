@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  android-template:
+  workflow_template:
     runs-on: "ubuntu-20.04"
     name: ${{matrix.name}}
 
