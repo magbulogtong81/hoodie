@@ -35,22 +35,6 @@ jobs:
             target: template_release
             arch: arm64
 
-          - name: Debug build arm
-            target: template_debug
-            arch: arm32
-
-          - name: Debug build arm64
-            target: template_debug
-            arch: arm64
-
-          - name: Debug build x86
-            target: template_debug
-            arch: x86_32
-
-          - name: Debug build x86_64
-            target: template_debug
-            arch: x86_64
-
           - name: Release build x86
             target: template_release
             arch: x86_32
